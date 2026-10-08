@@ -118,6 +118,15 @@ nav.open{transform:none}main{padding:12px}header{padding:0 10px;gap:8px}.hr .btn
 .card:hover .th{box-shadow:0 16px 30px -14px rgba(8,12,28,.5)}
 .skl{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(100deg,var(--surface2) 40%,var(--surface) 50%,var(--surface2) 60%);background-size:200% 100%;animation:skl 1.15s linear infinite}
 @keyframes skl{to{background-position:-200% 0}}
+
+.hero{aspect-ratio:21/10}
+@media(min-width:1000px){.hero{aspect-ratio:21/9}}
+.hslide{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.hslide.on{opacity:1;pointer-events:auto}
+.hslide .th{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
+.hdots{position:absolute;right:16px;bottom:14px;display:flex;gap:6px;z-index:3}
+.hdot{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.45);border:0;padding:0;cursor:pointer;transition:all .3s}
+.hdot.on{width:22px;background:#fff}
 </style>
 </head>
 <body>
@@ -169,13 +178,16 @@ const col=c=>`hsl(${[...c].reduce((a,x)=>a+x.charCodeAt(0),0)%360} 55% 45%)`;
 function thumb(v,i){const[a,b]=v.h;const yid=ytId(v.u);if(yid)return `<div class="th"><img src="https://i.ytimg.com/vi/${yid}/hqdefault.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="dur" ${v.f?'style="background:var(--live);color:#06231a"':''}>${v.d}</span></div>`;const lid=luluId(v.u);if(lid)return `<div class="th" style="background:hsl(${a} 45% 30%)"><img src="https://img.lulucdn.com/${lid}_xt.jpg" alt="" loading="lazy" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="dur" ${v.f?'style="background:var(--live);color:#06231a"':''}>${v.d}</span></div>`;return `<div class="th"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${a} 70% 52%)"/><stop offset="1" stop-color="hsl(${b} 75% 28%)"/></linearGradient></defs><rect width="320" height="180" fill="url(#g${i})"/><circle cx="${230+i*7%60}" cy="${40+i*13%50}" r="${50+i*9%40}" fill="hsl(${b} 80% 70%)" opacity=".28"/><path d="M0 ${130+i%3*10} Q80 ${90+i%4*8} 160 ${125} T320 ${110+i%5*6} V180 H0z" fill="hsl(${a} 60% 18%)" opacity=".55"/></svg><span class="dur" ${v.f?'style="background:var(--live);color:#06231a"':''}>${v.d}</span></div>`}
 function card(v,i,side){return `<button class="card" data-i="${i}"><div class="th-w">${thumb(v,i)}</div><div class="meta"><div><b>${esc(v.t)}</b><span class="muted">${v.v} x ditonton · ${v.w}</span></div></div></button>`}
 function list(){return V.map((v,i)=>({v,i})).filter(({v,i})=>(cat=="Semua"||cat=="Sedang tren"||cat=="Tersimpan"?(cat=="Tersimpan"?saved.has(i):true):v.k==cat)&&(v.t+v.c).toLowerCase().includes(term.toLowerCase()))}
+let heroTimer=null,heroIdx=0,heroN=0;
+function setHero(n){if(!heroN)return;heroIdx=(n+heroN)%heroN;document.querySelectorAll(".hslide").forEach((s,i)=>s.classList.toggle("on",i==heroIdx));document.querySelectorAll(".hdot").forEach((d,i)=>d.classList.toggle("on",i==heroIdx))}
+function startHero(n){clearInterval(heroTimer);heroN=n;if(n>1&&!matchMedia("(prefers-reduced-motion: reduce)").matches)heroTimer=setInterval(()=>{if(!document.hidden)setHero(heroIdx+1)},5000)}
 function renderBrowse(){
  if(!V.length){$("#chips").innerHTML="";$("#heroWrap").innerHTML="";$("#grid").innerHTML=`<div class="skl"></div>`.repeat(6);return}
  const cats=["Semua",...new Set(V.map(v=>v.k))];
  $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-cat="${c}">${c}</button>`).join("");
  const L=list();const showHero=cat=="Semua"&&!term;
- $("#heroWrap").innerHTML=showHero?`<div class="hero" data-i="0" tabindex="0" role="button">${thumb(V[0],0)}<div class="tx">${V[0].f?`<span class="live">Sedang tayang · ${V[0].v} penonton</span>`:`<span class="muted">Pilihan utama</span>`}<h1>${esc(V[0].t)}</h1><p class="muted">${V[0].v} x ditonton · ${V[0].w}</p><span class="btn">Tonton sekarang</span></div></div>`:"";
- const items=showHero?L.filter(x=>x.i):L;
+ const HV=showHero?V.slice(0,5):[];$("#heroWrap").innerHTML=showHero?`<div class="hero">${HV.map((v,i)=>`<div class="hslide${i?"":" on"}" data-i="${i}" role="button" tabindex="0">${thumb(v,i)}<div class="tx">${v.f?`<span class="live">Sedang tayang · ${v.v} penonton</span>`:`<span class="muted">Video terbaru</span>`}<h1>${esc(v.t)}</h1><p class="muted">${v.v} x ditonton · ${v.w}</p><span class="btn">Tonton sekarang</span></div></div>`).join("")}<div class="hdots">${HV.map((v,i)=>`<button class="hdot${i?"":" on"}" data-h="${i}" aria-label="Tampilkan video ${i+1}"></button>`).join("")}</div></div>`:"";heroIdx=0;startHero(HV.length);
+ const items=showHero?L.filter(x=>x.i>=HV.length):L;
  $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Tersimpan"?"Belum ada video yang disimpan. Buka sebuah video dan pilih Simpan.":"Tidak ada video yang cocok. Coba kata kunci atau kategori lain."}</div>`;
 }
 function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
@@ -212,7 +224,8 @@ function showHome(){window.onbeforeunload=null;clearInterval(timer);$("#watch").
 function goHome(){if(history.state&&history.state.w!=null)history.back();else showHome()}
 addEventListener("popstate",e=>{const s=e.state;if(s&&s.w!=null)openWatch(s.w,false);else if($("#watch").style.display=="block")showHome()});history.replaceState({},"");
 document.addEventListener("click",e=>{
- const c=e.target.closest(".card,.hero");if(c){openWatch(+c.dataset.i);return}
+ const hd=e.target.closest("[data-h]");if(hd){setHero(+hd.dataset.h);startHero(heroN);return}
+ const c=e.target.closest(".card,.hslide");if(c){openWatch(+c.dataset.i);return}
  const n=e.target.closest("[data-cat]");if(n){cat=n.dataset.cat;document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.cat==cat));$("#nav").classList.remove("open");goHome()}
 });
 $("#home").onclick=()=>{cat="Semua";term="";$("#q").value="";document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.cat=="Semua"));goHome()};
