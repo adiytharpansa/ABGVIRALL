@@ -142,7 +142,7 @@ function renderBrowse(){
  const items=showHero?L.filter(x=>x.i):L;
  $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Langganan"?"Kamu belum berlangganan kanal apa pun. Buka sebuah video dan pilih Berlangganan.":"Tidak ada video yang cocok. Coba kata kunci lain."}</div>`;
 }
-function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
+function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
 function secs(d){const p=String(d).split(":").map(Number);return p.some(isNaN)?600:p.reduce((a,x)=>a*60+x,0)}
 function fmt(s){const m=Math.floor(s/60);return m+":"+String(Math.floor(s%60)).padStart(2,"0")}
 function openWatch(i){
