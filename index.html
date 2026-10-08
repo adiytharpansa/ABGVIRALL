@@ -265,7 +265,7 @@ function apply(p){
 }
 async function loadSheet(){
  setSrc("Memuat video…");
- const pull=async()=>{try{const r=await fetch("videos.json");if(!r.ok)throw new Error(r.status);apply(await r.json())}catch(e){setSrc("Gagal memuat data video.");if(!V.length&&!sig){V=SAMPLE;refresh()}}};
+ const pull=async()=>{try{const r=await fetch("videos.json?v="+Math.floor(Date.now()/3e5));if(!r.ok)throw new Error(r.status);apply(await r.json())}catch(e){setSrc("Gagal memuat data video.");if(!V.length&&!sig){V=SAMPLE;refresh()}}};
  pull();setInterval(pull,60000);
 }
 renderNav();loadSheet();
