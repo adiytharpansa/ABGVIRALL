@@ -1,6 +1,6 @@
-# Lintang – Streaming Video
+# ABG VIRALL – Streaming Video
 
-Situs streaming video ala YouTube dalam **satu file Cloudflare Worker** (`lintang-worker.mjs`).
+Situs streaming video ala YouTube bernama **ABG VIRALL** (sebelumnya disebut Lintang) dalam **satu file Cloudflare Worker** (`lintang-worker.mjs`).
 Daftar videonya tidak ditulis di kode, melainkan dibaca langsung dari **Google Sheets**,
 jadi menambah video cukup dengan mengedit Sheet — tanpa deploy ulang.
 
@@ -34,7 +34,7 @@ Cara termudah, tanpa install apa pun:
 
 1. Buka file `lintang-worker.mjs`, salin seluruh isinya.
 2. Masuk ke https://dash.cloudflare.com → **Workers & Pages**.
-3. Buat Worker baru bernama `lintang` (atau buka yang sudah ada), klik **Deploy** sekali.
+3. Buat Worker baru bernama `abgvirall` (atau buka yang sudah ada), klik **Deploy** sekali.
 4. Klik **Edit code**, hapus isi editor, tempel kode tadi, lalu klik **Deploy**.
 5. Buka alamat Worker (berakhiran `.workers.dev`). Berhasil jika di atas halaman tertulis
    *"Tersambung ke Google Sheets · 12 video"*.
@@ -51,7 +51,7 @@ Setelah online, perubahan isi Sheet akan tampil otomatis dalam waktu sekitar 1 m
 
 ## Website online (GitHub Pages)
 
-Repo ini juga berisi `index.html` — versi statis Lintang yang membaca Google Sheets
+Repo ini juga berisi `index.html` — versi statis ABG VIRALL yang membaca Google Sheets
 langsung dari browser (tanpa Worker), untuk GitHub Pages:
 
 **https://adiytharpansa.github.io/ABGVIRALL/**
