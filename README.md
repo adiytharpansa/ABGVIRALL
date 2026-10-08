@@ -43,8 +43,13 @@ menampilkan pesan "Belum ada video yang tersedia saat ini."
 4. Buka alamat Worker (berakhiran `.workers.dev`). Berhasil jika video dari
    akun Lulustream langsung tampil di beranda.
 
-## Versi GitHub Pages
+## Versi GitHub Pages (yang aktif)
 
-`index.html` di repo adalah varian statis (GitHub Pages). Setelah Worker aktif,
-varian ini diarahkan membaca data dari Worker (`/api/videos`, CORS terbuka),
-sehingga kedua alamat menampilkan isi yang sama.
+Alamat utama: **https://adiytharpansa.github.io/ABGVIRALL/**
+
+`index.html` membaca `videos.json` di repo yang sama. Berkas itu berisi daftar
+video hasil sinkronisasi berkala dari API Lulustream (judul, jumlah ditonton,
+durasi, link) — tanpa kunci API di dalamnya. Menambah video = mengunggah ke
+Lulustream, lalu video tampil setelah sinkronisasi berikutnya.
+Worker di atas tetap tersedia sebagai jalur alternatif bila suatu saat ingin
+data real-time langsung dari API.
