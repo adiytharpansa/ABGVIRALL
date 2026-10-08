@@ -132,6 +132,7 @@ nav.open{transform:none}main{padding:12px}header{padding:0 10px;gap:8px}.hr .btn
 <nav id="nav">
   <a class="on" data-cat="Semua"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg><span>Beranda</span></a>
   <a data-cat="Sedang tren"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2s1 4-2 7c-2 2-5 4-5 8a6 6 0 0012 0c0-3-2-4-2-6-1 1-2 1-2 0 0-2 1-5-1-9z"/></svg><span>Sedang tren</span></a>
+  
   <a data-cat="Tersimpan"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12a1 1 0 011 1v17l-7-4-7 4V4a1 1 0 011-1z"/></svg><span>Tersimpan</span></a>
   <h4>Kategori</h4><div id="navcats"></div>
 </nav>
@@ -187,7 +188,7 @@ function openWatch(i,push){if(push!==false)history.pushState({w:i},"");
  const v=V[i],yid=ytId(v.u),emb=embedFor(v.u);clearInterval(timer);let p=0,playing=true;const total=v.f?3600:Math.max(60,secs(v.d));
  $("#browse").style.display="none";const w=$("#watch");w.style.display="block";scrollTo(0,0);
  const rel=V.map((x,j)=>({x,j})).filter(o=>o.j!=i).slice(0,7);
- w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}<button class="fs" id="fs" aria-label="Layar penuh, miringkan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
+ w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
  <h2 class="wtitle">${esc(v.t)}</h2>
  <div class="row"><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button><button class="btn alt ${saved.has(i)?'on':''}" id="save">${saved.has(i)?'Tersimpan':'Simpan'}</button></div>
  <div class="desc"><b>${v.v} x ditonton · ${v.w}</b><p>Kategori: ${v.k}.</p>${!emb&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
@@ -201,15 +202,12 @@ function openWatch(i,push){if(push!==false)history.pushState({w:i},"");
  $("#bar").onclick=e=>{const r=e.currentTarget.getBoundingClientRect();p=(e.clientX-r.left)/r.width*total};
  timer=setInterval(()=>{if(!playing)return;p=Math.min(total,p+1);fill.style.width=p/total*100+"%";tm.textContent=fmt(p)+" / "+(v.f?"LIVE":v.d)},1000);
  set();}
-
- $("#like").onclick=e=>{liked.has(i)?liked.delete(i):liked.add(i);e.currentTarget.classList.toggle("on")};
+  $("#like").onclick=e=>{liked.has(i)?liked.delete(i):liked.add(i);e.currentTarget.classList.toggle("on")};
  $("#save").onclick=e=>{saved.has(i)?saved.delete(i):saved.add(i);e.currentTarget.classList.toggle("on");e.currentTarget.textContent=saved.has(i)?"Tersimpan":"Simpan"};
  $("#share").onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(v.u||location.href)}catch(_){}b.textContent="Tautan disalin";setTimeout(()=>b.textContent="Bagikan",1600)};
- $("#fs").onclick=()=>goFS($("#pl"));
  window.onbeforeunload=(emb&&emb.t=="lulu")?(e=>{e.preventDefault();e.returnValue=""}):null;
 
 }
-async function goFS(el){if(!el)return;if(document.fullscreenElement){try{await document.exitFullscreen()}catch(e){}return}try{await el.requestFullscreen();if(screen.orientation&&screen.orientation.lock){try{await screen.orientation.lock('landscape')}catch(e){}}}catch(e){const v=el.querySelector('video');if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}}
 function showHome(){window.onbeforeunload=null;clearInterval(timer);$("#watch").style.display="none";$("#browse").style.display="block";renderBrowse()}
 function goHome(){if(history.state&&history.state.w!=null)history.back();else showHome()}
 addEventListener("popstate",e=>{const s=e.state;if(s&&s.w!=null)openWatch(s.w,false);else if($("#watch").style.display=="block")showHome()});history.replaceState({},"");
