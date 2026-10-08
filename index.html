@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ABG VIRALL – Streaming Video</title>
+<title>ABG VIRALL – Streaming Video</title>\n<meta name="description" content="ABG VIRALL — nonton video pilihan: musik, kuliner, teknologi, dan game, diputar langsung dari sumber resminya.">\n<meta property="og:title" content="ABG VIRALL – Streaming Video">\n<meta property="og:description" content="Nonton video pilihan: musik, kuliner, teknologi, dan game.">\n<meta property="og:type" content="website">\n<meta property="og:image" content="https://i.ytimg.com/vi/_6kXy-MKYpA/hqdefault.jpg">\n<meta name="theme-color" content="#3550F0">\n<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%233550F0'/><stop offset='1' stop-color='%23a855f7'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><path d='M26 20l18 12-18 12z' fill='white'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -93,6 +93,23 @@ main{flex:1;min-width:0;padding:16px 20px 48px}
 @media(max-width:760px){nav{position:fixed;left:0;top:69px;z-index:15;background:var(--bg);border-right:1px solid var(--line);transform:translateX(-100%);transition:transform .2s;width:220px}
 nav.open{transform:none}main{padding:12px}header{padding:0 10px;gap:8px}.search button{display:none}.hr .btn{display:none}.logo b{font-size:16px}.me{display:grid}.hl{flex:none}.hero .tx{padding:46px 18px 16px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.foot{margin-top:46px;border-top:1px solid var(--line);padding:28px 4px 10px}
+.frow{display:flex;gap:38px;flex-wrap:wrap;justify-content:space-between}
+.fbrand{font:800 19px var(--fd);color:var(--text);max-width:350px}
+.fbrand span{color:var(--accent)}
+.fbrand p{font:400 13.5px/1.55 var(--fb);color:var(--muted);margin-top:8px}
+.flinks{display:flex;flex-direction:column;gap:7px;font-size:14px}
+.flinks b{color:var(--text);font-size:12.5px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.flinks a{cursor:pointer;color:var(--muted)}
+.flinks a:hover{color:var(--accent)}
+.fbase{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.card{transition:transform .18s ease}
+.card:hover{transform:translateY(-3px)}
+.card .th{box-shadow:0 1px 3px rgba(8,12,28,.14)}
+.card:hover .th{box-shadow:0 16px 30px -14px rgba(8,12,28,.5)}
+.skl{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(100deg,var(--surface2) 40%,var(--surface) 50%,var(--surface2) 60%);background-size:200% 100%;animation:skl 1.15s linear infinite}
+@keyframes skl{to{background-position:-200% 0}}
 </style>
 </head>
 <body>
@@ -109,6 +126,7 @@ nav.open{transform:none}main{padding:12px}header{padding:0 10px;gap:8px}.search 
   <a class="on" data-cat="Semua"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg><span>Beranda</span></a>
   <a data-cat="Sedang tren"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2s1 4-2 7c-2 2-5 4-5 8a6 6 0 0012 0c0-3-2-4-2-6-1 1-2 1-2 0 0-2 1-5-1-9z"/></svg><span>Sedang tren</span></a>
   <a data-cat="Langganan"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v2H4zm2-3h12v2H6zM3 9h18v12H3zm7 3v6l5-3z"/></svg><span>Langganan</span></a>
+  <a data-cat="Tersimpan"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12a1 1 0 011 1v17l-7-4-7 4V4a1 1 0 011-1z"/></svg><span>Tersimpan</span></a>
   <h4>Kategori</h4><div id="navcats"></div>
 </nav>
 <main>
@@ -118,7 +136,7 @@ nav.open{transform:none}main{padding:12px}header{padding:0 10px;gap:8px}.search 
     <div id="heroWrap"></div>
     <div class="grid" id="grid"></div>
   </section>
-  <section id="watch"></section>
+  <section id="watch"></section>\n  <footer class="foot"><div class="frow"><div class="fbrand">ABG <span>VIRALL</span><p>Nonton video pilihan: musik, kuliner, teknologi, dan game. Semua video diputar dari sumber resminya.</p></div><div class="flinks"><b>Kategori</b><a data-cat="Musik">Musik</a><a data-cat="Kuliner">Kuliner</a><a data-cat="Teknologi">Teknologi</a><a data-cat="Game">Game</a></div><div class="flinks"><b>Jelajahi</b><a data-cat="Semua">Beranda</a><a data-cat="Sedang tren">Sedang tren</a><a data-cat="Langganan">Langganan</a><a data-cat="Tersimpan">Tersimpan</a></div></div><div class="fbase">© 2026 ABG VIRALL · Seluruh video adalah milik kanal dan kreator masing-masing.</div></footer>
 </main>
 </div>
 <script>
@@ -135,20 +153,22 @@ const SAMPLE=[
 {t:"Cara kerja jaringan 5G, dijelaskan dengan analogi jalan tol",c:"Sains Sore",v:"705 rb",w:"3 hari lalu",d:"9:18",k:"Teknologi",h:[170,220],s:"530 rb"},
 {t:"Bakso urat kuah bening: rahasia kaldu yang jernih",c:"Dapur Mbak Rini",v:"640 rb",w:"2 minggu lalu",d:"15:02",k:"Kuliner",h:[30,60],s:"820 rb"},
 {t:"Hidden gem: lima game indie yang layak dicoba akhir tahun",c:"Kapten Piksel",v:"198 rb",w:"5 jam lalu",d:"16:27",k:"Game",h:[260,300],s:"1,5 jt"}];
-let V=SAMPLE;const subs=new Set(),liked=new Set();let cat="Semua",term="",timer=null;
+const CMS=[["Sari W.","#6b7a99","Penjelasannya runtut dan gampang diikuti. Terima kasih!","2 jam lalu"],["Dimas","#b0644a","Sudah saya coba, hasilnya sesuai. Ditunggu video berikutnya.","1 hari lalu"],["Rina Amelia","#4a7ab0","Baru menemukan kanal ini, videonya rapi dan jelas.","3 jam lalu"],["Bagus Prasetyo","#5f9e6e","Kualitas videonya bagus, penjelasan mudah dipahami.","5 jam lalu"],["Putri Ayu","#9e5f8a","Ditonton sampai selesai, bermanfaat sekali.","kemarin"],["Andi Wijaya","#8a7a4a","Singkat, padat, dan langsung ke inti. Mantap.","kemarin"]];
+let V=[];const subs=new Set(),liked=new Set(),saved=new Set();let cat="Semua",term="",timer=null;
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const initial=c=>c.split(" ").map(w=>w[0]).slice(0,2).join("");
 const col=c=>`hsl(${[...c].reduce((a,x)=>a+x.charCodeAt(0),0)%360} 55% 45%)`;
 function thumb(v,i){const[a,b]=v.h;const yid=ytId(v.u);if(yid)return `<div class="th"><img src="https://i.ytimg.com/vi/${yid}/hqdefault.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="dur" ${v.f?'style="background:var(--live);color:#06231a"':''}>${v.d}</span></div>`;return `<div class="th"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${a} 70% 52%)"/><stop offset="1" stop-color="hsl(${b} 75% 28%)"/></linearGradient></defs><rect width="320" height="180" fill="url(#g${i})"/><circle cx="${230+i*7%60}" cy="${40+i*13%50}" r="${50+i*9%40}" fill="hsl(${b} 80% 70%)" opacity=".28"/><path d="M0 ${130+i%3*10} Q80 ${90+i%4*8} 160 ${125} T320 ${110+i%5*6} V180 H0z" fill="hsl(${a} 60% 18%)" opacity=".55"/></svg><span class="dur" ${v.f?'style="background:var(--live);color:#06231a"':''}>${v.d}</span></div>`}
 function card(v,i,side){return `<button class="card" data-i="${i}"><div class="th-w">${thumb(v,i)}</div><div class="meta">${side?'':`<div class="av" style="background:${col(v.c)}">${initial(v.c)}</div>`}<div><b>${esc(v.t)}</b><span class="muted">${v.c}<br>${v.v} x ditonton · ${v.w}</span></div></div></button>`}
-function list(){return V.map((v,i)=>({v,i})).filter(({v})=>(cat=="Semua"||cat=="Sedang tren"||cat=="Langganan"?(cat=="Langganan"?subs.has(v.c):true):v.k==cat)&&(v.t+v.c).toLowerCase().includes(term.toLowerCase()))}
+function list(){return V.map((v,i)=>({v,i})).filter(({v,i})=>(cat=="Semua"||cat=="Sedang tren"||cat=="Langganan"||cat=="Tersimpan"?(cat=="Langganan"?subs.has(v.c):cat=="Tersimpan"?saved.has(i):true):v.k==cat)&&(v.t+v.c).toLowerCase().includes(term.toLowerCase()))}
 function renderBrowse(){
+ if(!V.length){$("#chips").innerHTML="";$("#heroWrap").innerHTML="";$("#grid").innerHTML=`<div class="skl"></div>`.repeat(6);return}
  const cats=["Semua",...new Set(V.map(v=>v.k))];
  $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-cat="${c}">${c}</button>`).join("");
  const L=list();const showHero=cat=="Semua"&&!term;
  $("#heroWrap").innerHTML=showHero?`<div class="hero" data-i="0" tabindex="0" role="button">${thumb(V[0],0)}<div class="tx">${V[0].f?`<span class="live">Sedang tayang · ${V[0].v} penonton</span>`:`<span class="muted">Pilihan utama</span>`}<h1>${esc(V[0].t)}</h1><p class="muted">${V[0].c}${V[0].s?" · "+V[0].s+" pelanggan":""}</p><span class="btn">Tonton sekarang</span></div></div>`:"";
  const items=showHero?L.filter(x=>x.i):L;
- $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Langganan"?"Kamu belum berlangganan kanal apa pun. Buka sebuah video dan pilih Berlangganan.":"Tidak ada video yang cocok. Coba kata kunci lain."}</div>`;
+ $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Langganan"?"Kamu belum berlangganan kanal apa pun. Buka sebuah video dan pilih Berlangganan.":cat=="Tersimpan"?"Belum ada video yang disimpan. Buka sebuah video dan pilih Simpan.":"Tidak ada video yang cocok. Coba kata kunci atau kategori lain."}</div>`;
 }
 function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
 function luluId(u){const m=String(u||"").match(/(?:lulu(?:stream|vdo+)?\.(?:com|st)|streamhihi\.com|cdn1\.site)\/(?:e\/|d\/|embed-)?([0-9a-zA-Z]{8,})/i);return m?m[1]:null}
@@ -162,11 +182,10 @@ function openWatch(i){
  const rel=V.map((x,j)=>({x,j})).filter(o=>o.j!=i).slice(0,7);
  w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}<button class="fs" id="fs" aria-label="Layar penuh, miringkan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
  <h2 class="wtitle">${esc(v.t)}</h2>
- <div class="row"><div class="av" style="background:${col(v.c)}">${initial(v.c)}</div><div class="grow"><b>${v.c}</b><br><span class="muted" id="sc">${v.s?v.s+" pelanggan":"Kanal"}</span></div><button class="btn ${subs.has(v.c)?'alt on':''}" id="sub">${subs.has(v.c)?'Sudah berlangganan':'Berlangganan'}</button><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button></div>
+ <div class="row"><div class="av" style="background:${col(v.c)}">${initial(v.c)}</div><div class="grow"><b>${v.c}</b><br><span class="muted" id="sc">${v.s?v.s+" pelanggan":"Kanal"}</span></div><button class="btn ${subs.has(v.c)?'alt on':''}" id="sub">${subs.has(v.c)?'Sudah berlangganan':'Berlangganan'}</button><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button><button class="btn alt ${saved.has(i)?'on':''}" id="save">${saved.has(i)?'Tersimpan':'Simpan'}</button></div>
  <div class="desc"><b>${v.v} x ditonton · ${v.w}</b><p>Kategori: ${v.k}.</p>${!emb&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
  <h3 style="font:700 18px var(--fd)">Komentar</h3>
- <div class="cm"><div class="av" style="background:#6b7a99">S</div><div><b>Sari W.</b> <span class="muted">2 jam lalu</span><p>Penjelasannya runtut dan gampang diikuti. Terima kasih!</p></div></div>
- <div class="cm"><div class="av" style="background:#b0644a">D</div><div><b>Dimas</b> <span class="muted">1 hari lalu</span><p>Sudah saya coba, hasilnya sesuai. Ditunggu video berikutnya.</p></div></div></div>
+ ${CMS.slice(i%3,i%3+2).map(c=>`<div class="cm"><div class="av" style="background:${c[1]}">${c[0][0]}</div><div><b>${c[0]}</b> <span class="muted">${c[3]}</span><p>${c[2]}</p></div></div>`).join("")}</div>
  <aside class="side">${rel.map(o=>card(o.x,o.j,1)).join("")}</aside></div>`;
  if(!emb){const pl=$("#pl"),fill=$("#fill"),tm=$("#tm"),ico=$("#ico");
  const set=()=>{pl.classList.toggle("play",playing);ico.innerHTML=playing?'<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>':'<path d="M8 5v14l11-7z"/>'};
@@ -177,6 +196,7 @@ function openWatch(i){
  set();}
  $("#sub").onclick=e=>{subs.has(v.c)?subs.delete(v.c):subs.add(v.c);e.currentTarget.classList.toggle("on");e.currentTarget.classList.toggle("alt");e.currentTarget.textContent=subs.has(v.c)?"Sudah berlangganan":"Berlangganan"};
  $("#like").onclick=e=>{liked.has(i)?liked.delete(i):liked.add(i);e.currentTarget.classList.toggle("on")};
+ $("#save").onclick=e=>{saved.has(i)?saved.delete(i):saved.add(i);e.currentTarget.classList.toggle("on");e.currentTarget.textContent=saved.has(i)?"Tersimpan":"Simpan"};
  $("#share").onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(v.u||location.href)}catch(_){}b.textContent="Tautan disalin";setTimeout(()=>b.textContent="Bagikan",1600)};
  $("#fs").onclick=()=>goFS($("#pl"));
 
@@ -206,7 +226,7 @@ function renderNav(){
  $("#navcats").innerHTML=[...new Set(V.map(v=>v.k))].map(c=>`<a data-cat="${c}" class="${c==cat?"on":""}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z"/></svg><span>${c}</span></a>`).join("");
 }
 function refresh(){
- if(cat!="Semua"&&cat!="Sedang tren"&&cat!="Langganan"&&!V.some(v=>v.k==cat))cat="Semua";
+ if(cat!="Semua"&&cat!="Sedang tren"&&cat!="Langganan"&&cat!="Tersimpan"&&!V.some(v=>v.k==cat))cat="Semua";
  renderNav();if($("#watch").style.display=="block")goHome();else renderBrowse();
 }
 let sig="";
@@ -219,7 +239,7 @@ function apply(p){
 function parseCSV(t){const rows=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===","){r.push(c);c=""}else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&t[i+1]==="\n")i++;r.push(c);rows.push(r);r=[];c=""}else c+=ch}if(c!==""||r.length){r.push(c);rows.push(r)}return rows}
 async function loadSheet(){
  setSrc("Memuat dari Google Sheets…");
- const CSVURL="https://docs.google.com/spreadsheets/d/1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4/gviz/tq?tqx=out:csv&sheet=Sheet1";const pull=async()=>{try{const r=await fetch(CSVURL);if(!r.ok)throw new Error(r.status);const txt=await r.text();if(txt.trimStart().startsWith("<"))throw new Error("sheet tidak publik");apply({values:parseCSV(txt).filter(r=>r.some(x=>x!==""))})}catch(e){setSrc("Gagal memuat Sheet. Pastikan Sheet dibagikan sebagai 'Siapa saja yang memiliki link: Pelihat'.")}};
+ const CSVURL="https://docs.google.com/spreadsheets/d/1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4/gviz/tq?tqx=out:csv&sheet=Sheet1";const pull=async()=>{try{const r=await fetch(CSVURL);if(!r.ok)throw new Error(r.status);const txt=await r.text();if(txt.trimStart().startsWith("<"))throw new Error("sheet tidak publik");apply({values:parseCSV(txt).filter(r=>r.some(x=>x!==""))})}catch(e){setSrc("Gagal memuat Sheet. Pastikan Sheet dibagikan sebagai 'Siapa saja yang memiliki link: Pelihat'.");if(!V.length){V=SAMPLE;refresh()}}};
  pull();setInterval(pull,60000);
 }
 renderNav();loadSheet();
