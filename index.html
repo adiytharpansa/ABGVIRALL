@@ -188,6 +188,8 @@ function embedFor(u){const s=String(u||"");const y=ytId(s);if(y)return{t:"yt",sr
 function playerHTML(emb,v,i){if(!emb)return thumb(v,i);if(emb.t=="file")return `<video src="${emb.src}" controls autoplay playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>`;if(emb.t=="lulu")return `<iframe src="${emb.src}" title="${esc(v.t)}" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;return `<iframe src="${emb.src}" sandbox="allow-scripts allow-same-origin allow-presentation" title="${esc(v.t)}" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`}
 function secs(d){const p=String(d).split(":").map(Number);return p.some(isNaN)?600:p.reduce((a,x)=>a*60+x,0)}
 function fmt(s){const m=Math.floor(s/60);return m+":"+String(Math.floor(s%60)).padStart(2,"0")}
+const GISCUS={repo:"adiytharpansa/ABGVIRALL",repoId:"R_kgDOVAfVDg",category:"General",categoryId:"DIC_kwDOVAfVDs4DHVR7"};
+function loadComments(v){const box=$("#comments");if(!box)return;if(GISCUS.repoId.indexOf("__")===0){box.innerHTML='<p class="muted">Komentar sedang disiapkan.</p>';return}const s=document.createElement("script");s.src="https://giscus.app/client.js";s.async=true;s.crossOrigin="anonymous";const term=luluId(v.u)||ytId(v.u)||v.u||v.t;const A={"data-repo":GISCUS.repo,"data-repo-id":GISCUS.repoId,"data-category":GISCUS.category,"data-category-id":GISCUS.categoryId,"data-mapping":"specific","data-term":term,"data-strict":"0","data-reactions-enabled":"1","data-emit-metadata":"0","data-input-position":"top","data-theme":"preferred_color_scheme","data-lang":"id"};for(const k in A)s.setAttribute(k,A[k]);box.appendChild(s)}
 function openWatch(i,push){if(push!==false)history.pushState({w:i},"");
  const v=V[i],yid=ytId(v.u),emb=embedFor(v.u);clearInterval(timer);let p=0,playing=true;const total=v.f?3600:Math.max(60,secs(v.d));
  $("#browse").style.display="none";const w=$("#watch");w.style.display="block";scrollTo(0,0);
@@ -197,8 +199,9 @@ function openWatch(i,push){if(push!==false)history.pushState({w:i},"");
  <div class="row"><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button><button class="btn alt ${saved.has(i)?'on':''}" id="save">${saved.has(i)?'Tersimpan':'Simpan'}</button></div>
  <div class="desc"><b>${v.v} x ditonton</b><p>Kategori: ${v.k}.</p>${!emb&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
  <h3 style="font:700 18px var(--fd)">Komentar</h3>
- ${CMS.slice(i%3,i%3+2).map(c=>`<div class="cm"><div class="av" style="background:${c[1]}">${c[0][0]}</div><div><b>${c[0]}</b> <span class="muted">${c[3]}</span><p>${c[2]}</p></div></div>`).join("")}</div>
+ <div id="comments"></div></div>
  <aside class="side">${rel.map(o=>card(o.x,o.j,1)).join("")}</aside></div>`;
+ loadComments(v);
  if(!emb){const pl=$("#pl"),fill=$("#fill"),tm=$("#tm"),ico=$("#ico");
  const set=()=>{pl.classList.toggle("play",playing);ico.innerHTML=playing?'<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>':'<path d="M8 5v14l11-7z"/>'};
  const tog=()=>{playing=!playing;set()};
