@@ -182,7 +182,7 @@ let heroTimer=null,heroIdx=0,heroN=0;
 function setHero(n){if(!heroN)return;heroIdx=(n+heroN)%heroN;document.querySelectorAll(".hslide").forEach((s,i)=>s.classList.toggle("on",i==heroIdx));document.querySelectorAll(".hdot").forEach((d,i)=>d.classList.toggle("on",i==heroIdx))}
 function startHero(n){clearInterval(heroTimer);heroN=n;if(n>1&&!matchMedia("(prefers-reduced-motion: reduce)").matches)heroTimer=setInterval(()=>{if(!document.hidden)setHero(heroIdx+1)},5000)}
 function renderBrowse(){
- if(!V.length){$("#chips").innerHTML="";$("#heroWrap").innerHTML="";$("#grid").innerHTML=`<div class="skl"></div>`.repeat(6);return}
+ if(!V.length){$("#chips").innerHTML="";$("#heroWrap").innerHTML="";$("#grid").innerHTML=sig?`<div class="empty" style="grid-column:1/-1">Belum ada video yang tersedia saat ini.</div>`:`<div class="skl"></div>`.repeat(6);return}
  const cats=["Semua",...new Set(V.map(v=>v.k))];
  $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-cat="${c}">${c}</button>`).join("");
  const L=list();const showHero=cat=="Semua"&&!term;
@@ -243,7 +243,7 @@ const KEYS={t:["judul","title"],c:["kanal","channel"],v:["tonton","ditonton","vi
 function fromRows(rows){
  if(!rows.length)return null;const hd=rows[0].map(x=>String(x).trim().toLowerCase()),ix={};
  for(const k in KEYS)ix[k]=hd.findIndex(h=>KEYS[k].some(key=>h===key||h.includes(key)));
- if(ix.t<0||ix.c<0)return null;
+ if(ix.t<0)return null;
  const g=(r,k,d)=>{const x=ix[k]>=0&&r[ix[k]]!=null?String(r[ix[k]]).trim():"";return x||d};
  let data=rows.slice(1);const pre=Object.keys(KEYS).filter(k=>{const i=ix[k];return i>=0&&KEYS[k].some(key=>hd[i].startsWith(key)&&hd[i]!==key)});if(pre.length>=6){const rec=[];for(const k in KEYS){const i=ix[k];if(i<0)continue;const cell=String(rows[0][i]||"").trim();const key=[...KEYS[k]].sort((a,b)=>b.length-a.length).find(key=>hd[i].startsWith(key));rec[i]=key?cell.slice(key.length).trim():cell}if(rec[ix.t])data=[rec,...data]}return data.filter(r=>g(r,"t","")).map(r=>{
   const k=g(r,"k","Lainnya"),d=g(r,"d","0:00"),base=[...k].reduce((a,x)=>a*31+x.charCodeAt(0),7)%360;
@@ -259,14 +259,15 @@ function refresh(){
 let sig="";
 const setSrc=t=>{$("#src").textContent=t};
 function apply(p){
- const list=p&&Array.isArray(p.values)?fromRows(p.values):null,ok=list&&list.length;
- setSrc(ok?"Tersambung ke Google Sheets · "+list.length+" video":"Sheet masih kosong atau judul kolomnya belum sesuai. Menampilkan video contoh.");
- const n=JSON.stringify(ok?list:"sample");if(n===sig)return;sig=n;V=ok?list:SAMPLE;refresh();
+ const list=p&&Array.isArray(p.values)?fromRows(p.values):null;
+ if(list){setSrc("Tersambung ke Google Sheets · "+list.length+" video");const n=JSON.stringify(list);if(n===sig)return;sig=n;V=list;refresh();return}
+ setSrc("Judul kolom Sheet belum sesuai. Menampilkan video contoh.");
+ const n=JSON.stringify("sample");if(n===sig)return;sig=n;V=SAMPLE;refresh();
 }
 function parseCSV(t){const rows=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===","){r.push(c);c=""}else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&t[i+1]==="\n")i++;r.push(c);rows.push(r);r=[];c=""}else c+=ch}if(c!==""||r.length){r.push(c);rows.push(r)}return rows}
 async function loadSheet(){
  setSrc("Memuat dari Google Sheets…");
- const CSVURL="https://docs.google.com/spreadsheets/d/1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4/gviz/tq?tqx=out:csv&sheet=Sheet1";const pull=async()=>{try{const r=await fetch(CSVURL);if(!r.ok)throw new Error(r.status);const txt=await r.text();if(txt.trimStart().startsWith("<"))throw new Error("sheet tidak publik");apply({values:parseCSV(txt).filter(r=>r.some(x=>x!==""))})}catch(e){setSrc("Gagal memuat Sheet. Pastikan Sheet dibagikan sebagai 'Siapa saja yang memiliki link: Pelihat'.");if(!V.length){V=SAMPLE;refresh()}}};
+ const CSVURL="https://docs.google.com/spreadsheets/d/1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4/gviz/tq?tqx=out:csv&sheet=Sheet1";const pull=async()=>{try{const r=await fetch(CSVURL);if(!r.ok)throw new Error(r.status);const txt=await r.text();if(txt.trimStart().startsWith("<"))throw new Error("sheet tidak publik");apply({values:parseCSV(txt).filter(r=>r.some(x=>x!==""))})}catch(e){setSrc("Gagal memuat Sheet. Pastikan Sheet dibagikan sebagai 'Siapa saja yang memiliki link: Pelihat'.");if(!V.length&&!sig){V=SAMPLE;refresh()}}};
  pull();setInterval(pull,60000);
 }
 renderNav();loadSheet();
