@@ -1,62 +1,50 @@
 # ABG VIRALL – Streaming Video
 
-Situs streaming video ala YouTube bernama **ABG VIRALL** (sebelumnya disebut Lintang) dalam **satu file Cloudflare Worker** (`lintang-worker.mjs`).
-Daftar videonya tidak ditulis di kode, melainkan dibaca langsung dari **Google Sheets**,
-jadi menambah video cukup dengan mengedit Sheet — tanpa deploy ulang.
+Situs streaming video bernama **ABG VIRALL** dalam **satu file Cloudflare Worker**
+(`lintang-worker.mjs`). Daftar videonya dibaca langsung dari **API Lulustream**
+(akun Luluvid milik pemilik situs), jadi menambah video cukup dengan mengunggah
+video ke Lulustream — video otomatis tampil di situs, tanpa edit kode dan tanpa
+deploy ulang.
 
 ## Sumber data
 
-Google Sheets (tab `Sheet1`):
-https://docs.google.com/spreadsheets/d/1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4
+API Lulustream: `https://api.lulustream.com/api/file/list`
 
-Syaratnya, berbagi Sheet harus diatur ke **"Siapa saja yang memiliki link: Pelihat"**,
-kalau tidak Worker tidak bisa membacanya dan situs akan menampilkan video contoh.
+- Worker memanggil API itu dari sisi server (endpoint situs: `/api/videos`),
+  memetakan hasilnya (judul, jumlah ditonton asli, waktu unggah relatif,
+  durasi dari detik, thumbnail otomatis), dan menyajikannya ke halaman.
+- Hanya video yang bisa diputar (`canplay = 1`) yang ditampilkan, urut dari
+  yang terbaru diunggah. Cache 60 detik.
+- Kategori untuk semua video saat ini: `Video`.
 
-Kolom yang dibaca (urutan bebas, nama kolom fleksibel):
+## Kunci API (PENTING)
 
-| Kolom | Isi |
-|---|---|
-| judul | Judul video |
-| kanal | Nama kanal |
-| tonton | Jumlah penonton, mis. `1,2 jt` |
-| waktu | Waktu tayang, mis. `2 hari lalu` |
-| durasi | Mis. `10:24`, atau `LIVE` untuk siaran langsung |
-| kategori | Mis. Musik, Kuliner, Teknologi, Game |
-| link_video | Link video: YouTube, **Lulustream** (link nonton, /d/, /e/, atau kode embed), kode embed situs lain, atau file .mp4/.webm/.m3u8 — diputar langsung di halaman nonton; kosongkan jika tidak ada |
-| pelanggan | Jumlah pelanggan kanal, mis. `820 rb` |
+Kunci API Lulustream **tidak ditulis di kode** dan tidak disimpan di repo ini,
+karena repo & situs bersifat publik — siapa pun yang memegang kunci bisa
+mengendalikan akun.
 
-Catatan: jangan memformat sel durasi sebagai waktu (time) di Sheets, biarkan sebagai teks
-biasa — kalau tidak tampilannya bisa berubah, mis. `38:12` menjadi `38:12:00`.
+Kunci disimpan sebagai **Secret** di Cloudflare Worker dengan nama:
+
+```
+LULU_KEY
+```
+
+Tanpa secret ini, `/api/videos` mengembalikan daftar kosong dan situs
+menampilkan pesan "Belum ada video yang tersedia saat ini."
 
 ## Cara online (Cloudflare Workers)
 
-Cara termudah, tanpa install apa pun:
+1. Masuk ke https://dash.cloudflare.com → **Workers & Pages**.
+2. **Create** → **Import a repository** → pilih repo `ABGVIRALL` → **Deploy**
+   (nama worker: `abgvirall`, sesuai `wrangler.toml`).
+3. Buka worker-nya → **Settings** → **Variables and Secrets** → **Add** →
+   pilih tipe **Secret**, nama `LULU_KEY`, isi dengan kunci API Lulustream →
+   **Deploy**.
+4. Buka alamat Worker (berakhiran `.workers.dev`). Berhasil jika video dari
+   akun Lulustream langsung tampil di beranda.
 
-1. Buka file `lintang-worker.mjs`, salin seluruh isinya.
-2. Masuk ke https://dash.cloudflare.com → **Workers & Pages**.
-3. Buat Worker baru bernama `abgvirall` (atau buka yang sudah ada), klik **Deploy** sekali.
-4. Klik **Edit code**, hapus isi editor, tempel kode tadi, lalu klik **Deploy**.
-5. Buka alamat Worker (berakhiran `.workers.dev`). Berhasil jika di atas halaman tertulis
-   *"Tersambung ke Google Sheets · 12 video"*.
+## Versi GitHub Pages
 
-Cara lain, dari komputer dengan Node.js:
-
-```bash
-npx wrangler deploy
-```
-
-(`wrangler.toml` di repo ini sudah mengarah ke `lintang-worker.mjs`.)
-
-Setelah online, perubahan isi Sheet akan tampil otomatis dalam waktu sekitar 1 menit.
-
-## Website online (GitHub Pages)
-
-Repo ini juga berisi `index.html` — versi statis ABG VIRALL yang membaca Google Sheets
-langsung dari browser (tanpa Worker), untuk GitHub Pages:
-
-**https://adiytharpansa.github.io/ABGVIRALL/**
-
-Diaktifkan dari branch `gh-pages` (atau Settings → Pages → Deploy from a branch →
-`main` / root). Isinya sama persis dengan versi Worker, termasuk membaca Sheet yang
-sama, jadi mengedit Sheet akan memperbarui kedua versi. File `.nojekyll` disertakan
-agar GitHub Pages menyajikan file apa adanya.
+`index.html` di repo adalah varian statis (GitHub Pages). Setelah Worker aktif,
+varian ini diarahkan membaca data dari Worker (`/api/videos`, CORS terbuka),
+sehingga kedua alamat menampilkan isi yang sama.
