@@ -187,7 +187,7 @@ function renderBrowse(){
  $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-cat="${c}">${c}</button>`).join("");
  const L=list();const showHero=cat=="Semua"&&!term;
  const HV=showHero?V.slice(0,5):[];$("#heroWrap").innerHTML=showHero?`<div class="hero">${HV.map((v,i)=>`<div class="hslide${i?"":" on"}" data-i="${i}" role="button" tabindex="0">${thumb(v,i)}<div class="tx">${v.f?`<span class="live">Sedang tayang · ${v.v} penonton</span>`:`<span class="muted">Video terbaru</span>`}<h1>${esc(v.t)}</h1><p class="muted">${v.k} · ${v.v} x ditonton</p><span class="btn">Tonton sekarang</span></div></div>`).join("")}<div class="hdots">${HV.map((v,i)=>`<button class="hdot${i?"":" on"}" data-h="${i}" aria-label="Tampilkan video ${i+1}"></button>`).join("")}</div></div>`:"";heroIdx=0;startHero(HV.length);
- const items=showHero?L.filter(x=>x.i>=HV.length):L;
+ const items=L;
  $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Tersimpan"?"Belum ada video yang disimpan. Buka sebuah video dan pilih Simpan.":"Tidak ada video yang cocok. Coba kata kunci atau kategori lain."}</div>`;
 }
 function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
