@@ -76,6 +76,9 @@ main{flex:1;min-width:0;padding:16px 20px 48px}
 .bar{height:5px;border-radius:3px;background:rgba(255,255,255,.3);cursor:pointer;overflow:hidden}
 .bar div{height:100%;width:0;background:var(--accent)}
 .crow{display:flex;align-items:center;gap:12px;font-size:13px}
+.player .fs{position:absolute;top:10px;right:10px;z-index:6;width:40px;height:40px;border-radius:10px;background:rgba(7,9,17,.55);color:#fff;display:grid;place-items:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.player .fs:hover{background:rgba(7,9,17,.85)}
+#pl:fullscreen{border-radius:0;background:#000}
 .big{position:absolute;inset:0;margin:auto;width:68px;height:68px;border-radius:50%;background:rgba(10,12,20,.6);display:grid;place-items:center;color:#fff}
 .player.play .big{opacity:0}
 .wtitle{font:700 22px/1.25 var(--fd);margin:16px 0 12px}
@@ -157,7 +160,7 @@ function openWatch(i){
  const v=V[i],yid=ytId(v.u),emb=embedFor(v.u);clearInterval(timer);let p=0,playing=true;const total=v.f?3600:Math.max(60,secs(v.d));
  $("#browse").style.display="none";const w=$("#watch");w.style.display="block";scrollTo(0,0);
  const rel=V.map((x,j)=>({x,j})).filter(o=>o.j!=i).slice(0,7);
- w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
+ w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}<button class="fs" id="fs" aria-label="Layar penuh, miringkan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
  <h2 class="wtitle">${esc(v.t)}</h2>
  <div class="row"><div class="av" style="background:${col(v.c)}">${initial(v.c)}</div><div class="grow"><b>${v.c}</b><br><span class="muted" id="sc">${v.s?v.s+" pelanggan":"Kanal"}</span></div><button class="btn ${subs.has(v.c)?'alt on':''}" id="sub">${subs.has(v.c)?'Sudah berlangganan':'Berlangganan'}</button><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button></div>
  <div class="desc"><b>${v.v} x ditonton · ${v.w}</b><p>Kategori: ${v.k}.</p>${!emb&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
@@ -175,8 +178,10 @@ function openWatch(i){
  $("#sub").onclick=e=>{subs.has(v.c)?subs.delete(v.c):subs.add(v.c);e.currentTarget.classList.toggle("on");e.currentTarget.classList.toggle("alt");e.currentTarget.textContent=subs.has(v.c)?"Sudah berlangganan":"Berlangganan"};
  $("#like").onclick=e=>{liked.has(i)?liked.delete(i):liked.add(i);e.currentTarget.classList.toggle("on")};
  $("#share").onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(v.u||location.href)}catch(_){}b.textContent="Tautan disalin";setTimeout(()=>b.textContent="Bagikan",1600)};
+ $("#fs").onclick=()=>goFS($("#pl"));
 
 }
+async function goFS(el){if(!el)return;if(document.fullscreenElement){try{await document.exitFullscreen()}catch(e){}return}try{await el.requestFullscreen();if(screen.orientation&&screen.orientation.lock){try{await screen.orientation.lock('landscape')}catch(e){}}}catch(e){const v=el.querySelector('video');if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}}
 function goHome(){clearInterval(timer);$("#watch").style.display="none";$("#browse").style.display="block";renderBrowse()}
 document.addEventListener("click",e=>{
  const c=e.target.closest(".card,.hero");if(c){openWatch(+c.dataset.i);return}
