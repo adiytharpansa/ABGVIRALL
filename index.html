@@ -218,6 +218,12 @@ document.addEventListener("click",e=>{
 $("#home").onclick=()=>{cat="Semua";term="";$("#q").value="";document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.cat=="Semua"));goHome()};
 $("#q").oninput=e=>{term=e.target.value;if($("#browse").style.display=="none")goHome();else renderBrowse()};
 $("#menu").onclick=()=>{const n=$("#nav");innerWidth<=760?n.classList.toggle("open"):n.classList.toggle("min")};
+const navEl=$("#nav"),mainEl=document.querySelector("main"),closeNav=()=>navEl.classList.remove("open");
+mainEl.addEventListener("touchmove",()=>{if(navEl.classList.contains("open"))closeNav()},{passive:true});
+mainEl.addEventListener("wheel",()=>{if(navEl.classList.contains("open"))closeNav()},{passive:true});
+addEventListener("scroll",e=>{if(navEl.classList.contains("open")&&!navEl.contains(e.target))closeNav()},{passive:true});
+let txN=null;navEl.addEventListener("touchstart",e=>{txN=e.touches[0].clientX},{passive:true});
+navEl.addEventListener("touchend",e=>{if(txN!=null&&txN-e.changedTouches[0].clientX>45)closeNav();txN=null},{passive:true});
 renderBrowse();
 const SRV="Google Sheets",SID="1u2RDf6Ag8BJh7Top8UMVOc8wZlemSoCoC5KHwRkfUk4",RNG="Sheet1!A1:G500";
 const KEYS={t:["judul","title"],c:["kanal","channel"],v:["tonton","ditonton","views"],w:["waktu","tayang"],d:["durasi","duration"],k:["kategori","category"],u:["link_video","link","url"],s:["pelanggan","subscribers"]};
