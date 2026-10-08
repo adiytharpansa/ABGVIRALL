@@ -148,21 +148,24 @@ function renderBrowse(){
  $("#grid").innerHTML=items.length?items.map(({v,i})=>card(v,i)).join(""):`<div class="empty" style="grid-column:1/-1">${cat=="Langganan"?"Kamu belum berlangganan kanal apa pun. Buka sebuah video dan pilih Berlangganan.":"Tidak ada video yang cocok. Coba kata kunci lain."}</div>`;
 }
 function ytId(u){const m=String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);return m?m[1]:null}
+function luluId(u){const m=String(u||"").match(/(?:lulu(?:stream|vdo+)?\.(?:com|st)|streamhihi\.com|cdn1\.site)\/(?:e\/|d\/|embed-)?([0-9a-zA-Z]{8,})/i);return m?m[1]:null}
+function embedFor(u){const s=String(u||"");const y=ytId(s);if(y)return{t:"yt",src:"https://www.youtube-nocookie.com/embed/"+y+"?rel=0&modestbranding=1&playsinline=1"};const l=luluId(s);if(l)return{t:"iframe",src:"https://lulustream.com/e/"+l};const f=s.match(/<iframe[^>]+src="([^"]+)"/i);if(f&&/^https?:\/\//i.test(f[1]))return{t:"iframe",src:f[1]};if(/^https?:\/\//i.test(s)&&/\.(mp4|webm|m3u8)(\?|#|$)/i.test(s))return{t:"file",src:s};return null}
+function playerHTML(emb,v,i){if(!emb)return thumb(v,i);if(emb.t=="file")return `<video src="${emb.src}" controls autoplay playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>`;return `<iframe src="${emb.src}" title="${esc(v.t)}" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`}
 function secs(d){const p=String(d).split(":").map(Number);return p.some(isNaN)?600:p.reduce((a,x)=>a*60+x,0)}
 function fmt(s){const m=Math.floor(s/60);return m+":"+String(Math.floor(s%60)).padStart(2,"0")}
 function openWatch(i){
- const v=V[i],yid=ytId(v.u);clearInterval(timer);let p=0,playing=true;const total=v.f?3600:Math.max(60,secs(v.d));
+ const v=V[i],yid=ytId(v.u),emb=embedFor(v.u);clearInterval(timer);let p=0,playing=true;const total=v.f?3600:Math.max(60,secs(v.d));
  $("#browse").style.display="none";const w=$("#watch");w.style.display="block";scrollTo(0,0);
  const rel=V.map((x,j)=>({x,j})).filter(o=>o.j!=i).slice(0,7);
- w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${yid?`<iframe src="https://www.youtube-nocookie.com/embed/${yid}?rel=0&modestbranding=1&playsinline=1" title="${esc(v.t)}" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`:thumb(v,i)}${yid?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
+ w.innerHTML=`<div class="wgrid"><div><div class="player play" id="pl">${playerHTML(emb,v,i)}${emb?"":`<button class="big" id="pp" aria-label="Putar atau jeda"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="ctrl"><div class="bar" id="bar"><div id="fill"></div></div><div class="crow"><button id="pp2" aria-label="Putar atau jeda"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ico"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></button><span id="tm">0:00 / ${v.f?'LIVE':v.d}</span></div></div>`}</div>
  <h2 class="wtitle">${esc(v.t)}</h2>
  <div class="row"><div class="av" style="background:${col(v.c)}">${initial(v.c)}</div><div class="grow"><b>${v.c}</b><br><span class="muted" id="sc">${v.s?v.s+" pelanggan":"Kanal"}</span></div><button class="btn ${subs.has(v.c)?'alt on':''}" id="sub">${subs.has(v.c)?'Sudah berlangganan':'Berlangganan'}</button><button class="btn alt ${liked.has(i)?'on':''}" id="like">Suka</button><button class="btn alt" id="share">Bagikan</button></div>
- <div class="desc"><b>${v.v} x ditonton · ${v.w}</b><p>Kategori: ${v.k}.</p>${!yid&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
+ <div class="desc"><b>${v.v} x ditonton · ${v.w}</b><p>Kategori: ${v.k}.</p>${!emb&&/^https?:\/\//i.test(v.u||"")?`<a class="btn" href="${v.u}" target="_blank" rel="noopener noreferrer">Tonton video</a>`:""}</div>
  <h3 style="font:700 18px var(--fd)">Komentar</h3>
  <div class="cm"><div class="av" style="background:#6b7a99">S</div><div><b>Sari W.</b> <span class="muted">2 jam lalu</span><p>Penjelasannya runtut dan gampang diikuti. Terima kasih!</p></div></div>
  <div class="cm"><div class="av" style="background:#b0644a">D</div><div><b>Dimas</b> <span class="muted">1 hari lalu</span><p>Sudah saya coba, hasilnya sesuai. Ditunggu video berikutnya.</p></div></div></div>
  <aside class="side">${rel.map(o=>card(o.x,o.j,1)).join("")}</aside></div>`;
- if(!yid){const pl=$("#pl"),fill=$("#fill"),tm=$("#tm"),ico=$("#ico");
+ if(!emb){const pl=$("#pl"),fill=$("#fill"),tm=$("#tm"),ico=$("#ico");
  const set=()=>{pl.classList.toggle("play",playing);ico.innerHTML=playing?'<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>':'<path d="M8 5v14l11-7z"/>'};
  const tog=()=>{playing=!playing;set()};
  $("#pp").onclick=tog;$("#pp2").onclick=tog;

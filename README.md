@@ -22,7 +22,7 @@ Kolom yang dibaca (urutan bebas, nama kolom fleksibel):
 | waktu | Waktu tayang, mis. `2 hari lalu` |
 | durasi | Mis. `10:24`, atau `LIVE` untuk siaran langsung |
 | kategori | Mis. Musik, Kuliner, Teknologi, Game |
-| link_video | Link YouTube (akan diputar sebagai embed); kosongkan jika tidak ada |
+| link_video | Link video: YouTube, **Lulustream** (link nonton, /d/, /e/, atau kode embed), kode embed situs lain, atau file .mp4/.webm/.m3u8 — diputar langsung di halaman nonton; kosongkan jika tidak ada |
 | pelanggan | Jumlah pelanggan kanal, mis. `820 rb` |
 
 Catatan: jangan memformat sel durasi sebagai waktu (time) di Sheets, biarkan sebagai teks
