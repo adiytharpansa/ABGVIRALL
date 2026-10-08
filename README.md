@@ -48,3 +48,15 @@ npx wrangler deploy
 (`wrangler.toml` di repo ini sudah mengarah ke `lintang-worker.mjs`.)
 
 Setelah online, perubahan isi Sheet akan tampil otomatis dalam waktu sekitar 1 menit.
+
+## Website online (GitHub Pages)
+
+Repo ini juga berisi `index.html` — versi statis Lintang yang membaca Google Sheets
+langsung dari browser (tanpa Worker), untuk GitHub Pages:
+
+**https://adiytharpansa.github.io/ABGVIRALL/**
+
+Diaktifkan dari branch `gh-pages` (atau Settings → Pages → Deploy from a branch →
+`main` / root). Isinya sama persis dengan versi Worker, termasuk membaca Sheet yang
+sama, jadi mengedit Sheet akan memperbarui kedua versi. File `.nojekyll` disertakan
+agar GitHub Pages menyajikan file apa adanya.
