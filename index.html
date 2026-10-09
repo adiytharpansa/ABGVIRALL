@@ -213,7 +213,7 @@ function openWatch(i,push){try{sessionStorage.setItem("abg_watch",String(i))}cat
   $("#like").onclick=e=>{liked.has(i)?liked.delete(i):liked.add(i);e.currentTarget.classList.toggle("on")};
  $("#save").onclick=e=>{saved.has(i)?saved.delete(i):saved.add(i);e.currentTarget.classList.toggle("on");e.currentTarget.textContent=saved.has(i)?"Tersimpan":"Simpan"};
  $("#share").onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(v.u||location.href)}catch(_){}b.textContent="Tautan disalin";setTimeout(()=>b.textContent="Bagikan",1600)};
- $("#fs")&&($("#fs").onclick=()=>{if(emb&&(emb.t==="fire"||emb.t==="dood"))goFS($("#pl iframe"),false);else goFS($("#pl"))});
+ const fsB=$("#fs");if(fsB){fsB.style.display=(emb&&emb.t==="dood")?"none":"";fsB.onclick=()=>{if(emb&&emb.t==="fire")goFS($("#pl iframe"),false);else goFS($("#pl"))}}
  if(emb&&(emb.t==="lulu"||emb.t==="fire"||emb.t==="dood")){const fr=$("#pl iframe"),plEl=$("#pl"),fc=$("#facade");let ready=false,clicked=false,restores=0,tm2=null;const hideFc=()=>{if(fc)fc.style.display="none"};fr.addEventListener("load",()=>{if(!ready){clearTimeout(tm2);tm2=setTimeout(()=>{ready=true},1200);if(emb.t==="fire"||emb.t==="dood")setTimeout(hideFc,1500);return}if(clicked&&restores<2){restores++; clicked=false; ready=false; fr.src=emb.src; const h=$("#adh"); if(h){h.style.display="block"; h.textContent="Player sempat dialihkan iklan — sudah dipulihkan otomatis. Silakan klik play lagi."}}});plEl.addEventListener("pointerdown",()=>{hideFc(); if(ready)clicked=true},true);addEventListener("blur",()=>{if(document.activeElement===fr){hideFc(); if(ready)clicked=true}})}
  window.onbeforeunload=(emb&&(emb.t=="lulu"||emb.t=="dood"))?(e=>{e.preventDefault();e.returnValue=""}):null;
 
