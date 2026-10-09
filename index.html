@@ -247,6 +247,7 @@ function fromRows(rows){
 }
 function renderNav(){
  $("#navcats").innerHTML=[...new Set(V.map(v=>v.k).filter(Boolean))].map(c=>`<a data-cat="${c}" class="${c==cat?"on":""}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z"/></svg><span>${c}</span></a>`).join("");
+ const nc=$("#navcats");if(nc.previousElementSibling)nc.previousElementSibling.style.display=nc.innerHTML?"":"none";
 }
 function refresh(){
  if(cat!="Semua"&&cat!="Sedang tren"&&cat!="Tersimpan"&&!V.some(v=>v.k==cat))cat="Semua";
