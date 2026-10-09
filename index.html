@@ -242,7 +242,7 @@ function fromRows(rows){
  if(ix.t<0)return null;
  const g=(r,k,d)=>{const x=ix[k]>=0&&r[ix[k]]!=null?String(r[ix[k]]).trim():"";return x||d};
  let data=rows.slice(1);const pre=Object.keys(KEYS).filter(k=>{const i=ix[k];return i>=0&&KEYS[k].some(key=>hd[i].startsWith(key)&&hd[i]!==key)});if(pre.length>=6){const rec=[];for(const k in KEYS){const i=ix[k];if(i<0)continue;const cell=String(rows[0][i]||"").trim();const key=[...KEYS[k]].sort((a,b)=>b.length-a.length).find(key=>hd[i].startsWith(key));rec[i]=key?cell.slice(key.length).trim():cell}if(rec[ix.t])data=[rec,...data]}return data.filter(r=>g(r,"t","")).map(r=>{
-  const k=g(r,"k","Lainnya").replace(/^video$/i,""),d=g(r,"d","0:00"),base=[...k].reduce((a,x)=>a*31+x.charCodeAt(0),7)%360;
+  const k=g(r,"k","").replace(/^video$/i,""),d=g(r,"d","0:00"),base=[...k].reduce((a,x)=>a*31+x.charCodeAt(0),7)%360;
   return {t:g(r,"t",""),c:esc(g(r,"c","Tanpa kanal")),v:esc(g(r,"v","0")),w:esc(g(r,"w","")),d:esc(d),k:esc(k),u:g(r,"u",""),p:esc(g(r,"p","")),s:esc(g(r,"s","")),h:[base,(base+50)%360],f:d.toUpperCase()=="LIVE"}});
 }
 function renderNav(){
